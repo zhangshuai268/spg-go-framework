@@ -21,8 +21,13 @@ func main() {
 			break
 		}
 	}
+	err := generator.ChangeGit(url)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	//初始化go.mod
-	err := generator.RunCommand()
+	err = generator.RunCommand()
 	if err != nil {
 		fmt.Println(err)
 		return
