@@ -29,7 +29,6 @@ func GenerateModels(ConfigFilePath string, GenerateModelPath string) {
 	if err != nil {
 		log.Panic(err)
 	}
-	fmt.Println(GenerateModelPath)
 	f, err := os.Create(GenerateModelPath)
 	if err != nil {
 		log.Panic(err.Error())
@@ -65,8 +64,6 @@ func GenerateModels(ConfigFilePath string, GenerateModelPath string) {
 	}
 	f.Write([]byte("\n"))
 	f.WriteString("}")
-
-	fmt.Println("Generate configuration models by config.json file successfully,,models are stored in config.go")
 }
 func configTypeGenerator(m map[string]interface{}, file *os.File) {
 	for index, value := range m {

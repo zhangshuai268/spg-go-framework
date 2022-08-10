@@ -1,66 +1,35 @@
 {
   "apiUser" : {
-    "api_port" : "8087",
-    "api_secret": "sZWJiJVxhQofXNMpDGnOkVBOQoTWyTHm",
-    "save_dir" : "api/upload/wx/"
+    "api_port" : "8080",
+    "api_secret": "sZWJiJVxhQofXNMpDGnOkVBOQoTWyTHm"
   },
   "apiAdmin" : {
-    "api_port" : "8088",
-    "api_secret" : "5KQ1iYHgcGj9CqWRHglk1CMdGSN83Clh",
-    "save_dir" : "api/upload/admin/"
-  },
-  "wxConfig" : {
-    "app_id" : "wxd85b4cd83dba5acc",
-    "app_secret" : "fbae05ceb4a973152bf94ba710a50f6c",
-    "oauth_url" : "https://api.weixin.qq.com/sns/oauth2/access_token?",
-    "grant_type" : "authorization_code"
-  },
-  "wxPay": {
-    "app_id": "wxd85b4cd83dba5acc",
-    "mch_id": "1300774801",
-    "key": "08d35ccA147b1Bbc1eD192efeb4cEe18",
-    "notify_url": "https://sbd.sc-edu.com/yz_test_user/api_wx/order/call_back",
-    "trade_type": "JSAPI"
-  },
-  "aliPay": {
-    "app_id": "2021003137616087",
-    "private_key": "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCw77Thlp5FZH5qIusbpgnCNEsjUXDGAuUJ0++w9UsxZ4FiUY+ywIKjXCW4M7WcPU18c6X1vdpeEg30Z1rS7qiQMa9SlEDnPAxGPaYHFrOj+srsF3arIRYyGN0gQC2rI3H/IYwRH3hTcaEU6myDYHdSm4KeziZUDpYvqMlL/YjYaHa+Az0XlUz8pU/vU6k0Cyl4uNUyvADNIU0WaXk6RSjPogpuJ/jqvj4V5GGdx5Sk4DNHuvlbOnKJ7kHYK9tIFYtD+dA9JxV2IGwZ8+Df3zZ7CCa96KKW7RgV+HXnasFolqEJvt+DpZV4wpWQtSzPdLzYDzbL6qnfW22r/f+66PCRAgMBAAECggEAdlyUUwiP7fnQ+y1Ku98xzgFvdjvnxf5vu0hUorskxvLnwZ6wEzLm8WMWNIga6F619BflIGQVrTJEtYdiYZKXnoYuM37LgCRSTba11y4flAWUM6VqlAX5NCAf5JAqPL7kZnjJmzbDJobv6+76ElS43cD7+0IKr9ZmL5GovzXmkmUKij83Csg0VnQ+mRAH+1lV7OF6DHPkFkfby/mlM+Q6UBiFweuPqgy7+03H10WYz+2+gdis0umLRE6+7uZBfHP1/tms3m5dzARf6Y/7orfW3tD5807uKAKQBVaKi59fYvWkwBNw2gbcea879H0JcsPWUVpJAxtWPJ9+/wx71xPwAQKBgQDcDFKWW29AIip8T5DEr/EpVZgoD/10M6OXiGOgVmaVGE3T7o/bp0qk7L6Fu+uoLmj+x+lCRIqeL0E6+yszmHdKoml8zQLpI0F6DzzWkIw4XURrjMhlcJXPpM7dFA9AktUYmC1sq4x0d6i7GZi3Vhy76OzEVLaA7kHqFLAC1/xnAQKBgQDN2DOYdTqmhyBgOHRyjGuyQ2YljEisnwbqFIE5cgM5ISNB13BB/q4UGcw8nBO8LLZWPDd9bxdn2XnQnNJn2MnRFZqazh4KYjExMy0Ojogac1KYspViQ7zPduA4olfNFRgyCpjda4Sz/k5AWcfOopo7eMlKc9yUklpfh8B3tmOZkQKBgQDFkn7Yp5IU+FhDM0FdiEe1ADhUyD6ehfr9hKVHAiyq8551ij46T1OTD0nlU5w8bicxk5cZO+dmLjGYXookkmGRbo/eUUiqwU/54xKR6EkuFnfnRQltIxAv1t8x2t/y76NLqN8oMkMzE3k5PLtE6Zl1Eqb7hMA0tTgTj62VcA4dAQKBgDMoqKobeJgqvUEsxsQxYhLL7XcnhmhgnbdPoU5Fp8drFPgoMx4zzc/xGXF22PDLrAWCscfa9FY7FqtiTmjA2Ge+ls4irBSoktFHhss3YVwxjTWmLLpfW220fcWVk3zE4V6Og6+EKVcSvSABMEeK4gol2uFGKmxCc3OKqasXCWoBAoGADRqf+2zZrlDS5N7esD6YgtUuU9I/5SEPn4g+rUwp0LXp6DmbeQVwI+iZYl8UrcnJLVlq0KkrwUaJE7KeZK63IxeSCPWWWiwkGMmHTanriM6cV/r2sTjEdfdX8u0SXzdo7LLWeSI/jzynH8Kf/UgWs4hpNGb1l2agjQSAmGsx2ys=",
-    "ali_pay_public_key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp/f+mk4OTHlJr9Jot5by0oFq3hvUKMuNOIxhdawWsV1bMT0T+V9xFgdvO/DsfjYUvdfvAqstbDlIBZzHSN81et9V+VqBHeGMlFvF2R542SYYqeNmqoxP5R2gehdw9WkURxVgfoWTVKJnWkiRAMgrt6OioOCl9CwA4bOb3QWQQyqVJDfd/4lhbEEAMBGV6vt7uLlBOsO4WsVpucOMqcCByLEEXWysDmHBtIVhpyG3d02/rPxWirl8EOL6mXyEXi3OhdtqBcgBsZ7oSZZsBTx4Ax6Re9X4Rr2/oALHjpPAex6AOXi4yONYQSivQvUOig/KWyOGnfr5Ru1KKC8BkvdwDwIDAQAB",
-    "notify_url": "https://sbd.sc-edu.com/yz_test_user/api_wx/order/notify_ali",
-    "return_url": ""
+    "api_port" : "8081",
+    "api_secret" : "5KQ1iYHgcGj9CqWRHglk1CMdGSN83Clh"
   },
   "mysql" : {
     "driver": "mysql",
     "user": "root",
-    "pass_word": "spg@1703",
-    "host": "121.37.187.166",
+    "pass_word": "123456",
+    "host": "127.0.0.1",
     "port": "3306",
-    "db_name": "yz",
+    "db_name": "test",
     "charset": "utf8mb4",
     "show_sql": "true",
     "parseTime": "true",
     "loc": "Asia/Shanghai"
   },
   "redis": {
-    "host" : "192.168.0.221",
+    "host" : "127.0.0.1",
     "port" : "6379",
-    "pass_word": "",
+    "pass_word": "123456",
     "db": 0
   },
-  "aliSms": {
-    "access_key_id": "LTAI5tGXdVVs7X9EmGUesnjT",
-    "access_key_secret": "uKWFqWG7Cx8FJFwHWqsnClI3xlr3jC",
-    "region_id": "cn-nanjing",
-    "template_code": "SMS_218675200",
-    "sign_name": "南京奥义"
-  },
-  "host" : "http://121.37.187.166:80",
-  "s3cnf" : {
-    "bucket" : "cultural-collectibles",
-    "access_key" : "AKIAQUHNAMJ5JCKPUB7G",
-    "secret_key" : "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",
-    "region" : "ap-northeast-1",
-    "host" : "https://d34bon2xs5n7nx.cloudfront.net"
+  "mongodb" : {
+    "driver" : "mongodb",
+    "user" :  "root",
+    "pass_word" :  "123456",
+    "host" : "127.0.0.1:27017",
+    "db_name" : "admin"
   }
-
 }
