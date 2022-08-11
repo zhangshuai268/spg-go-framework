@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"spg-go-framework/generator"
 	"strconv"
 	"strings"
@@ -11,12 +12,12 @@ func main() {
 	//修改git源
 	fmt.Println("请输入git仓库地址：")
 	var url string
-	fmt.Scanln(&url)
+	_, _ = fmt.Scanln(&url)
 	for {
 		index := strings.Index(url, ".git")
 		if index == -1 {
 			fmt.Println("请输入正确的git仓库地址：")
-			fmt.Scanln(&url)
+			_, _ = fmt.Scanln(&url)
 		} else {
 			break
 		}
@@ -53,7 +54,7 @@ func main() {
 	fmt.Println("生成数据库目录成功")
 	fmt.Println("请输入开发系统数量：")
 	var n string
-	fmt.Scanln(&n)
+	_, _ = fmt.Scanln(&n)
 	var atoi int
 	for {
 		atoi, err = strconv.Atoi(n)
@@ -61,31 +62,31 @@ func main() {
 			break
 		} else {
 			fmt.Println("请输入数字：")
-			fmt.Scanln(&n)
+			_, _ = fmt.Scanln(&n)
 		}
 	}
 	for i := 0; i < atoi; i++ {
 		var name, port string
 		fmt.Println("请输入开发系统名称：")
-		fmt.Scanln(&name)
+		_, _ = fmt.Scanln(&name)
 		for {
 			letter := isLetter(name)
 			if letter {
 				break
 			} else {
 				fmt.Println("系统名称不合法：")
-				fmt.Scanln(&name)
+				_, _ = fmt.Scanln(&name)
 			}
 		}
 		fmt.Println("请输入开发系统运行端口号：")
-		fmt.Scanln(&port)
+		_, _ = fmt.Scanln(&port)
 		for {
 			_, err = strconv.Atoi(port)
 			if err == nil {
 				break
 			} else {
 				fmt.Println("请输入正确端口号：")
-				fmt.Scanln(&port)
+				_, _ = fmt.Scanln(&port)
 			}
 		}
 		//docker文件生成
@@ -112,6 +113,8 @@ func main() {
 			return
 		}
 	}
+	_ = os.Remove("./framework_create.exe")
+	_ = os.Remove("./README.md")
 }
 
 func isLetter(s string) bool {
