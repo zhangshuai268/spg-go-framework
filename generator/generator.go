@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -9,39 +10,43 @@ import (
 // FrameworkGenerator 生成目录结构
 //TODO: FrameworkGenerator
 func FrameworkGenerator() error {
-	err := os.MkdirAll("api/docker", os.ModePerm)
+	getwd, err := os.Getwd()
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("api/swagger", os.ModePerm)
+	err = os.MkdirAll(getwd+"/api/docker", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("cmd", os.ModePerm)
+	err = os.MkdirAll(getwd+"/api/swagger", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/api", os.ModePerm)
+	err = os.MkdirAll(getwd+"/cmd", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/config", os.ModePerm)
+	err = os.MkdirAll(getwd+"/internal/api", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/crontab", os.ModePerm)
+	err = os.MkdirAll(getwd+"/internal/config", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/model", os.ModePerm)
+	err = os.MkdirAll(getwd+"/internal/crontab", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/pkg/middle", os.ModePerm)
+	err = os.MkdirAll(getwd+"/internal/model", os.ModePerm)
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll("internal/pkg/code", os.ModePerm)
+	err = os.MkdirAll(getwd+"/internal/pkg/middle", os.ModePerm)
+	if err != nil {
+		return err
+	}
+	err = os.MkdirAll(getwd+"/internal/pkg/code", os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -51,14 +56,30 @@ func FrameworkGenerator() error {
 // ConfigGenerator 生成配置相关文件
 //TODO: ConfigGenerator
 func ConfigGenerator() error {
+	getwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
 	//生成config_init.go文件
-	fci, err := os.Create("./internal/config/config_init.go")
+	fci, err := os.Create(getwd + "/internal/config/config_init.go")
 	if err != nil {
 		return err
 	}
 	fci.WriteString("package config\n\nimport (\n\t\"encoding/json\"\n\t\"errors\"\n\t\"io/ioutil\"\n\t\"os\"\n\t\"path/filepath\"\n)\n\nvar Conf *Config\n\nfunc InitConfig() (*Config, error) {\n\n\tdir, err := os.Getwd()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tconfig := new(Config)\n\n\tpath := filepath.Join(dir, \"config.json\")\n\tif os.Getenv(\"STAGE\") != \"\" {\n\t\tpath = filepath.Join(dir, \"config_\"+os.Getenv(\"STAGE\")+\".json\")\n\t}\n\tfile, err := os.Open(path)\n\tif err != nil {\n\t\treturn nil, errors.New(\"打开配置文件错误\" + path + err.Error())\n\t}\n\n\tconfByte, err := ioutil.ReadAll(file)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\terr = json.Unmarshal(confByte, config)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\tConf = config\n\n\treturn Conf, nil\n}\n")
 	//根据json文件生成config结构体
-	GenerateModels("./config.json", "./internal/config/config.go")
+	GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
+	//结构体更新器放入项目
+	openOld, err := os.Open("./config_update.exe")
+	if err != nil {
+		return err
+	}
+	defer openOld.Close()
+	openNew, err := os.Create(getwd + "/config_update.exe")
+	if err != nil {
+		return err
+	}
+	defer openNew.Close()
+	io.Copy(openNew, openOld)
 	return nil
 }
 

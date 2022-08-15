@@ -5,30 +5,29 @@ import (
 	"github.com/zhangshuai268/spg-go-framework/generator"
 	"os"
 	"strconv"
-	"strings"
 )
 
 func main() {
-	//修改git源
-	fmt.Println("请输入git仓库地址：")
-	var url string
-	_, _ = fmt.Scanln(&url)
-	for {
-		index := strings.Index(url, ".git")
-		if index == -1 {
-			fmt.Println("请输入正确的git仓库地址：")
-			_, _ = fmt.Scanln(&url)
-		} else {
-			break
-		}
-	}
-	err := generator.ChangeGit(url)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	////修改git源
+	//fmt.Println("请输入git仓库地址：")
+	//var url string
+	//_, _ = fmt.Scanln(&url)
+	//for {
+	//	index := strings.Index(url, ".git")
+	//	if index == -1 {
+	//		fmt.Println("请输入正确的git仓库地址：")
+	//		_, _ = fmt.Scanln(&url)
+	//	} else {
+	//		break
+	//	}
+	//}
+	//err := generator.ChangeGit(url)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
 	//初始化go.mod
-	err = generator.RunCommand()
+	err := generator.RunCommand()
 	if err != nil {
 		fmt.Println(err)
 		return
