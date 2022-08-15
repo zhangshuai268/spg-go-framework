@@ -1,7 +1,6 @@
 package generator
 
 import (
-	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -68,18 +67,6 @@ func ConfigGenerator() error {
 	fci.WriteString("package config\n\nimport (\n\t\"encoding/json\"\n\t\"errors\"\n\t\"io/ioutil\"\n\t\"os\"\n\t\"path/filepath\"\n)\n\nvar Conf *Config\n\nfunc InitConfig() (*Config, error) {\n\n\tdir, err := os.Getwd()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tconfig := new(Config)\n\n\tpath := filepath.Join(dir, \"config.json\")\n\tif os.Getenv(\"STAGE\") != \"\" {\n\t\tpath = filepath.Join(dir, \"config_\"+os.Getenv(\"STAGE\")+\".json\")\n\t}\n\tfile, err := os.Open(path)\n\tif err != nil {\n\t\treturn nil, errors.New(\"打开配置文件错误\" + path + err.Error())\n\t}\n\n\tconfByte, err := ioutil.ReadAll(file)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\terr = json.Unmarshal(confByte, config)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\tConf = config\n\n\treturn Conf, nil\n}\n")
 	//根据json文件生成config结构体
 	GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
-	//结构体更新器放入项目
-	openOld, err := os.Open("./config_update.exe")
-	if err != nil {
-		return err
-	}
-	defer openOld.Close()
-	openNew, err := os.Create(getwd + "/config_update.exe")
-	if err != nil {
-		return err
-	}
-	defer openNew.Close()
-	io.Copy(openNew, openOld)
 	return nil
 }
 
