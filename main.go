@@ -31,25 +31,25 @@ func main() {
 		//初始化go.mod
 		err := generator.RunCommand()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
 			return
 		}
 		fmt.Println("初始化go.mod,下载相关依赖")
 		err = generator.FrameworkGenerator()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
 			return
 		}
 		fmt.Println("生成目录结构成功")
 		err = generator.ConfigGenerator()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
 			return
 		}
 		fmt.Println("生成配置文件成功")
 		err = generator.StoreGenerator()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println(err.Error())
 			return
 		}
 		fmt.Println("生成数据库目录成功")
@@ -93,24 +93,25 @@ func main() {
 			//docker文件生成
 			err = generator.DockerGenerator(name, port)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Println(err.Error())
 				continue
 			}
 			//swagger文件生成
 			err = generator.SwaggerGenerator(name, port)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Println(err.Error())
 				return
 			}
 			//主要代码目录文件生成
 			err = generator.InternalGenerator(name)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Println(err.Error())
 				return
 			}
 			//启动代码文件生成
 			err = generator.CmdGenerator(name, port)
 			if err != nil {
+				fmt.Println(err.Error())
 				return
 			}
 		}
@@ -129,6 +130,7 @@ func main() {
 		}
 		err := generator.FactoryGenerator(name)
 		if err != nil {
+			fmt.Println(err.Error())
 			return
 		}
 	} else if opts.Service {
@@ -146,6 +148,7 @@ func main() {
 		}
 		err := generator.ServiceGenerator(name)
 		if err != nil {
+			fmt.Println(err.Error())
 			return
 		}
 	}
