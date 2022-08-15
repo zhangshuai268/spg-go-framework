@@ -194,7 +194,7 @@ func CmdGenerator(name string, port string) error {
 }
 
 func FactoryGenerator(name string) error {
-	fc, err := os.Create("internal/store/" + name + ".go")
+	fc, err := os.Create("internal/api/store/" + name + ".go")
 	if err != nil {
 		return err
 	}
