@@ -24,6 +24,14 @@ $ spg-go-framework -g
 ````
 $ spg-go-framework -u
 ````
+4.生成store
+````
+$ spg-go-framework -f
+````
+5.生成service
+````
+$ spg-go-framework -s
+````
 
 ## 项目使用
 
@@ -48,18 +56,6 @@ $ spg-go-framework -v
 
 ````
 $ spg-go-framework -g
-````
-
-5.生成store
-
-````
-$ spg-go-framework -f
-````
-
-5.生成service
-
-````
-$ spg-go-framework -s
 ````
 
 4.命令执行过程
