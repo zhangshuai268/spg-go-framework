@@ -41,6 +41,10 @@ func FrameworkGenerator() error {
 	if err != nil {
 		return err
 	}
+	err = os.MkdirAll("internal/pkg/code", os.ModePerm)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -117,10 +121,15 @@ func InternalGenerator(name string) error {
 		return err
 	}
 	fcm.WriteString("package middle\n\nimport (\n\t\"errors\"\n\t\"fmt\"\n\t\"github.com/dgrijalva/jwt-go\"\n\t\"github.com/gin-gonic/gin\"\n\t\"net/http\"\n)\n\nfunc CORS() gin.HandlerFunc {\n\treturn func(c *gin.Context) {\n\t\tmethod := c.Request.Method\n\t\torigin := c.Request.Header.Get(\"Origin\")\n\t\tif origin != \"\" {\n\t\t\t//c.Writer.Header().Set(\"Access-Control-Allow-Origin\", \"*\")\n\t\t\tc.Header(\"Access-Control-Allow-Origin\", \"*\") // 可将将 * 替换为指定的域名\n\t\t\tc.Header(\"Access-Control-Allow-Methods\", \"POST, GET, OPTIONS, PUT, DELETE, UPDATE\")\n\t\t\tc.Header(\"Access-Control-Allow-Headers\", \"Origin, X-Requested-With, Content-Type, Accept, Authorization\")\n\t\t\tc.Header(\"Access-Control-Expose-Headers\", \"Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Cache-Control, Content-Language, Content-Type\")\n\t\t\tc.Header(\"Access-Control-Allow-Credentials\", \"true\")\n\t\t}\n\t\tif method == \"OPTIONS\" {\n\t\t\tc.AbortWithStatus(http.StatusNoContent)\n\t\t}\n\t\tc.Next()\n\t}\n}\n\nfunc ErrHandler() gin.HandlerFunc {\n\treturn func(c *gin.Context) {\n\t\tdefer func() {\n\t\t\tif err := recover(); err != nil {\n\t\t\t\tfmt.Println(err)\n\t\t\t}\n\t\t\tc.Abort()\n\t\t}()\n\t\tc.Next()\n\t}\n}\n\n// GetToken 生成token\n//  secret: 项目密钥\n//  claims: 自定义jwt加密结构体\nfunc GetToken(secret string, claims jwt.Claims) (string, error) {\n\tappSecret := secret\n\tjwtKey := []byte(appSecret)\n\ttoken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)\n\ttokenString, err := token.SignedString(jwtKey)\n\tif err != nil {\n\t\treturn \"\", err\n\t}\n\n\treturn tokenString, nil\n}\n\n// ParseToken 解密token\n//  tokenString: 解密方法\nfunc ParseToken(tokenString string, secret string, claims jwt.Claims) error {\n\n\tjwtKey := []byte(secret)\n\ttoken, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {\n\t\treturn jwtKey, nil\n\t})\n\tif err == nil && token != nil {\n\t\tif token.Valid {\n\t\t\treturn nil\n\t\t} else {\n\t\t\treturn errors.New(\"token解析失败\")\n\t\t}\n\t}\n\treturn err\n}\n")
+	//生成中间件代码
+	fcc, err := os.Create("internal/pkg/code/code.go")
+	if err != nil {
+		return err
+	}
+	fcc.WriteString("package code\n\nimport \"github.com/gin-gonic/gin\"\n\nfunc BuildReturn(context *gin.Context, state int, message string, data interface{}) {\n\n\tcontext.JSON(200, gin.H{\n\t\t\"status\":  state,\n\t\t\"message\": message,\n\t\t\"data\":    data,\n\t})\n\treturn\n}\n")
 	//生成路由文件
 	fcr, err := os.Create("internal/api/" + name + "/route.go")
 	fcr.WriteString("package " + name + "\n\nimport (\n\t\"github.com/gin-gonic/gin\"\n\t\"" + path + "/internal/api/store\"\n\t\"" + path + "/internal/pkg/middle\"\n)\n\nfunc RouterInit(factory store.Factory) (*gin.Engine, error) {\n\trouter := gin.Default()\n\trouter.Use(gin.Logger())\n\trouter.Use(gin.Recovery())\n\n\t//全局异常监控\n\trouter.Use(middle.ErrHandler())\n\trouter.Use(middle.CORS())\n\n\tstore.SetClient(factory)\n\treturn router, nil\n}")
-
 	return nil
 }
 
