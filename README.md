@@ -114,7 +114,7 @@ $ spg-go-framework -f
 >看到提示后输入需要生成service的名称，只能包含字母和下划线
 
 ````
-请输入store名称：
+请输入service名称：
 code
 ````
 
