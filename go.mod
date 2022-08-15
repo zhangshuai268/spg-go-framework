@@ -1,4 +1,4 @@
-module spg-go-framework
+module spg-go
 
 go 1.18
 

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"spg-go-framework/generator"
+	"spg-go/generator"
 	"strconv"
 	"strings"
 )
