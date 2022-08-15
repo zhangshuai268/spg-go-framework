@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/zhangshuai268/spg-go-framework/generator"
 	"os"
-	"spg-go/generator"
 	"strconv"
 	"strings"
 )

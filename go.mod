@@ -1,4 +1,4 @@
-module spg-go
+module github.com/zhangshuai268/spg-go-framework
 
 go 1.18
 
