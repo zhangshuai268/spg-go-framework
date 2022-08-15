@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 	"strings"
@@ -64,7 +65,7 @@ func ConfigGenerator() error {
 	if err != nil {
 		return err
 	}
-	fci.WriteString("package config\n\nimport (\n\t\"encoding/json\"\n\t\"errors\"\n\t\"io/ioutil\"\n\t\"os\"\n\t\"path/filepath\"\n)\n\nvar Conf *Config\n\nfunc InitConfig() (*Config, error) {\n\n\tdir, err := os.Getwd()\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tconfig := new(Config)\n\n\tpath := filepath.Join(dir, \"config.json\")\n\tif os.Getenv(\"STAGE\") != \"\" {\n\t\tpath = filepath.Join(dir, \"config_\"+os.Getenv(\"STAGE\")+\".json\")\n\t}\n\tfile, err := os.Open(path)\n\tif err != nil {\n\t\treturn nil, errors.New(\"打开配置文件错误\" + path + err.Error())\n\t}\n\n\tconfByte, err := ioutil.ReadAll(file)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\terr = json.Unmarshal(confByte, config)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\tConf = config\n\n\treturn Conf, nil\n}\n")
+	fci.WriteString("package config\n\nimport (\n\t\"encoding/json\"\n\t\"errors\"\n\t\"io/ioutil\"\n\t\"os\"\n\t\"path/filepath\"\n)\n\nvar Conf *Config\n\nfunc InitConfig(paths ...string) (*Config, error) {\n\tvar path string\n\tif len(paths) == 0 {\n\t\tdir, err := os.Getwd()\n\t\tif err != nil {\n\t\t\treturn nil, err\n\t\t}\n\t\tpath = filepath.Join(dir, \"config.json\")\n\t\tif os.Getenv(\"STAGE\") != \"\" {\n\t\t\tpath = filepath.Join(dir, \"config_\"+os.Getenv(\"STAGE\")+\".json\")\n\t\t}\n\t} else {\n\t\tpath = paths[0]\n\t}\n\n\tconfig := new(Config)\n\tfile, err := os.Open(path)\n\tif err != nil {\n\t\treturn nil, errors.New(\"打开配置文件错误\" + path + err.Error())\n\t}\n\n\tconfByte, err := ioutil.ReadAll(file)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\terr = json.Unmarshal(confByte, config)\n\tif err != nil {\n\t\treturn nil, errors.New(\"读取配置文件错误\" + err.Error())\n\t}\n\n\tConf = config\n\n\treturn Conf, nil\n}\n")
 	//根据json文件生成config结构体
 	GenerateModels(getwd+"/config.json", getwd+"/internal/config/config.go")
 	return nil
@@ -192,6 +193,32 @@ func CmdGenerator(name string, port string) error {
 	return nil
 }
 
+func FactoryGenerator(name string) error {
+	fc, err := os.Create("internal/store/" + name + ".go")
+	if err != nil {
+		return err
+	}
+	big := firstUpper(name) + "Store"
+	small := strings.ToLower(name[:1]) + name[1:] + "Store"
+	fc.WriteString("package store\n\ntype " + big + " interface {\n}\n\ntype " + small + " struct {\n}\n\nfunc New" + big + "(ds *datastore) " + big + " {\n\treturn &" + small + "{}\n}\n")
+	return nil
+}
+
+func ServiceGenerator(name string) error {
+	path := getCurrentPath()
+	if path != "service" {
+		return errors.New("请进入service目录执行此命令")
+	}
+	big := firstUpper(name) + "Service"
+	small := strings.ToLower(name[:1]) + name[1:] + "Service"
+	fc, err := os.Create("./" + name + ".go")
+	fc.WriteString("package service\n\ntype " + big + " interface {\n}\n\ntype " + small + " struct {\n}\n\nfunc New" + big + "(s *service) " + big + " {\n\treturn &" + small + "{}\n}\n")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // RunCommand 执行初始化命令
 //TODO: RunCommand
 func RunCommand() error {
@@ -257,4 +284,21 @@ func getCurrentPath() string {
 		return ""
 	}
 	return split[len(split)-1]
+}
+
+func firstUpper(s string) string {
+	var res string
+	if s == "" {
+		return ""
+	}
+	flag := strings.Contains(s, "_")
+	if flag {
+		split := strings.Split(s, "_")
+		for _, str := range split {
+			res += strings.ToUpper(str[:1]) + str[1:]
+		}
+	} else {
+		res = strings.ToUpper(s[:1]) + s[1:]
+	}
+	return res
 }

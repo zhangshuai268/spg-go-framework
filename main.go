@@ -12,6 +12,8 @@ var opts struct {
 	Generator bool `short:"g"`
 	Version   bool `short:"v" long:"version"`
 	Update    bool `short:"u" long:"update"`
+	Service   bool `short:"s" long:"service"`
+	Store     bool `short:"f" long:"factory"`
 }
 
 func main() {
@@ -112,6 +114,40 @@ func main() {
 				return
 			}
 		}
+	} else if opts.Store {
+		fmt.Println("请输入store名称：")
+		var name string
+		_, _ = fmt.Scanln(&name)
+		for {
+			letter := isStore(name)
+			if letter {
+				break
+			} else {
+				fmt.Println("系统名称不合法：")
+				_, _ = fmt.Scanln(&name)
+			}
+		}
+		err := generator.FactoryGenerator(name)
+		if err != nil {
+			return
+		}
+	} else if opts.Service {
+		fmt.Println("请输入service名称：")
+		var name string
+		_, _ = fmt.Scanln(&name)
+		for {
+			letter := isStore(name)
+			if letter {
+				break
+			} else {
+				fmt.Println("系统名称不合法：")
+				_, _ = fmt.Scanln(&name)
+			}
+		}
+		err := generator.ServiceGenerator(name)
+		if err != nil {
+			return
+		}
 	}
 
 }
@@ -119,6 +155,15 @@ func main() {
 func isLetter(s string) bool {
 	for _, r := range s {
 		if (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && r != '-' && r != '_' {
+			return false
+		}
+	}
+	return true
+}
+
+func isStore(s string) bool {
+	for _, r := range s {
+		if (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && r != '_' {
 			return false
 		}
 	}
