@@ -78,6 +78,38 @@ api_wx
 8087
 ````
 
+5.生成store和service
+
+(1).生成store
+
+>项目根目录运行下面命令
+
+````
+$ spg-go-framework -f
+````
+
+>看到提示后输入需要生成store的名称，只能包含字母和下划线
+
+````
+请输入store名称：
+code
+````
+
+(2).生成service
+
+>在需要生成的service目录下执行下面命令
+
+````
+$ spg-go-framework -f
+````
+
+>看到提示后输入需要生成service的名称，只能包含字母和下划线
+
+````
+请输入store名称：
+code
+````
+
 ## 项目目录介绍
 
 1.目录结构
