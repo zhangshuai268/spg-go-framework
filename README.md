@@ -50,6 +50,18 @@ $ spg-go-framework -v
 $ spg-go-framework -g
 ````
 
+5.生成store
+
+````
+$ spg-go-framework -f
+````
+
+5.生成service
+
+````
+$ spg-go-framework -s
+````
+
 4.命令执行过程
 
 (1).初始化go.mod,生成相关目录
