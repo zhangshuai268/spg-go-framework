@@ -108,7 +108,7 @@ code
 >在需要生成的service目录下执行下面命令
 
 ````
-$ spg-go-framework -f
+$ spg-go-framework -s
 ````
 
 >看到提示后输入需要生成service的名称，只能包含字母和下划线
