@@ -155,7 +155,7 @@ func DockerGenerator(name string, port string) error {
 	if err != nil {
 		return err
 	}
-	fcd.WriteString("FROM golang:1.18-alpine AS builder\n\n# 设置工作目录\nWORKDIR /app\n\nENV GO111MODULE=on  GOPROXY=https://goproxy.cn,direct GIN_MODE=release\n\nRUN cd\n\nCOPY . /app\n\nRUN go mod tidy\n\nRUN cd /app/cmd/" + name + " \\\n    && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o " + name + "\n# 获取 Distroless 镜像，只有 650 kB 的大小，是常用的 alpine:latest 的 1/4\nFROM alpine\n\n# 将上一阶段构建好的二进制文件复制到本阶段中\nCOPY --from=builder /app/cmd/" + name + "/ .\nCOPY --from=builder /app/internal/config/ ./internal/config\nCOPY --from=builder /app/log ./log\n\n# 设置监听端口\nEXPOSE " + port + "\n# 配置启动命令\nENTRYPOINT [\"./" + name + "\"]")
+	fcd.WriteString("FROM golang:1.18-alpine AS builder\n\n# 设置工作目录\nWORKDIR /app\n\nENV GO111MODULE=on  GOPROXY=https://goproxy.cn,direct GIN_MODE=release\n\nRUN cd\n\nCOPY . /app\n\nRUN go mod tidy\n\nRUN cd /app/cmd/" + name + " \\\n    && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o " + name + "\n# 获取 Distroless 镜像，只有 650 kB 的大小，是常用的 alpine:latest 的 1/4\nFROM alpine\n\n# 将上一阶段构建好的二进制文件复制到本阶段中\nCOPY --from=builder /app/cmd/" + name + "/ .\nCOPY --from=builder /app/config* ./\nCOPY --from=builder /app/log ./log\n\n# 设置监听端口\nEXPOSE " + port + "\n# 配置启动命令\nENTRYPOINT [\"./" + name + "\"]")
 	return nil
 }
 
